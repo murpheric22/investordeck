@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/Anthros Investor Deck _hosted_ (1).html" }
+  ]
+}
