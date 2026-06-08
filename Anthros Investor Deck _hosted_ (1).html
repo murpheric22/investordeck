@@ -159,6 +159,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
       window.Babel.transformScriptTags();
     }
+    // Fix: kick off animation for the initially-active slide on first load.
+    // After bundler swaps the document, DOMContentLoaded has already fired,
+    // so the slide controller may miss the initial activation. We use a
+    // double-rAF to ensure the browser has painted opacity:0 first, then
+    // set data-anim="in" so the CSS transition fires correctly.
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        var s = document.querySelector('section.slide');
+        if (s && !s.getAttribute('data-anim')) {
+          s.setAttribute('data-anim', 'in');
+        }
+      });
+    });
   } catch (err) {
     setStatus('Error unpacking: ' + err.message);
     console.error('Bundle unpack error:', err);
